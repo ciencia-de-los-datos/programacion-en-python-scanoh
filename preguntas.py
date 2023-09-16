@@ -78,7 +78,19 @@ def pregunta_03():
     ]
 
     """
-    return
+    suma_por_letra = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 2:
+                letra = parts[0]
+                valor = int(parts[1])
+                if letra in suma_por_letra:
+                    suma_por_letra[letra] += valor
+                else:
+                    suma_por_letra[letra] = valor
+    resultado_03 = sorted(suma_por_letra.items())
+    return resultado_03
 
 
 def pregunta_04():
