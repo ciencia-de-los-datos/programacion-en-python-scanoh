@@ -21,7 +21,13 @@ def pregunta_01():
     214
 
     """
-    return
+    suma = 0
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            values = line.strip().split('\t')
+            if len(values) >= 2:
+                suma += int(values[1])
+    return suma 
 
 
 def pregunta_02():
@@ -39,7 +45,22 @@ def pregunta_02():
     ]
 
     """
-    return
+    conteo_letras = {}
+
+    with open('data.csv', 'r') as file:
+        lines = file.readlines()
+
+    for line in lines:
+        parts = line.strip().split('\t')
+        if parts:
+            primera_letra = parts[0][0] 
+            if primera_letra in conteo_letras:
+                conteo_letras[primera_letra] += 1
+            else:
+                conteo_letras[primera_letra] = 1
+
+    resultado_02 = sorted(conteo_letras.items())
+    return resultado_02
 
 
 def pregunta_03():
@@ -57,7 +78,19 @@ def pregunta_03():
     ]
 
     """
-    return
+    suma_por_letra = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 2:
+                letra = parts[0]
+                valor = int(parts[1])
+                if letra in suma_por_letra:
+                    suma_por_letra[letra] += valor
+                else:
+                    suma_por_letra[letra] = valor
+    resultado_03 = sorted(suma_por_letra.items())
+    return resultado_03
 
 
 def pregunta_04():
@@ -82,7 +115,21 @@ def pregunta_04():
     ]
 
     """
-    return
+    registros_por_mes = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 3:
+                fecha = parts[2]
+                mes = fecha.split('-')[1]
+                if mes in registros_por_mes:
+                    registros_por_mes[mes] += 1
+                else:
+                    registros_por_mes[mes] = 1
+
+    resultado_04 = sorted(registros_por_mes.items())
+
+    return resultado_04
 
 
 def pregunta_05():
@@ -100,7 +147,24 @@ def pregunta_05():
     ]
 
     """
-    return
+    max_min_por_letra = {}
+
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 2:
+                letra = parts[0]
+                valor = int(parts[1])
+                if letra in max_min_por_letra:
+                    max_min_por_letra[letra][0] = max(max_min_por_letra[letra][0], valor)
+                    max_min_por_letra[letra][1] = min(max_min_por_letra[letra][1], valor)
+                else:
+                    max_min_por_letra[letra] = [valor, valor]
+
+    resultado_05 = [(letra, max_min[0], max_min[1]) for letra, max_min in max_min_por_letra.items()]
+    resultado_05 = sorted(resultado_05, key=lambda x: x[0])
+
+    return resultado_05
 
 
 def pregunta_06():
@@ -125,7 +189,29 @@ def pregunta_06():
     ]
 
     """
-    return
+    min_max_por_clave = {}
+
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 5:
+                columna5 = parts[4]
+                elementos = columna5.split(',')
+                for elemento in elementos:
+                    if ':' in elemento:
+                        clave, valor_str = elemento.split(':')
+                        valor = int(valor_str)
+                        if clave in min_max_por_clave:
+                            min_max_por_clave[clave][0] = min(min_max_por_clave[clave][0], valor)
+                            min_max_por_clave[clave][1] = max(min_max_por_clave[clave][1], valor)
+                        else:
+                           
+                            min_max_por_clave[clave] = [valor, valor]
+
+    resultado_06 = [(clave, min_max[0], min_max[1]) for clave, min_max in min_max_por_clave.items()]
+    resultado_06 = sorted(resultado_06, key=lambda x: x[0])
+
+    return resultado_06
 
 
 def pregunta_07():
@@ -149,7 +235,25 @@ def pregunta_07():
     ]
 
     """
-    return
+    asociaciones = {}
+    with open(r'data.csv', 'r') as file:
+        lines = file.readlines()
+
+    for line in lines:
+        parts = line.strip().split('\t')
+        if len(parts) > 2:
+            valor_columna_2 = int(parts[1])
+            letra_columna_1 = parts[0]
+            
+            if valor_columna_2 in asociaciones:
+                asociaciones[valor_columna_2].append(letra_columna_1)
+            else:
+                asociaciones[valor_columna_2] = [letra_columna_1]
+
+    respuesta_07 = list(asociaciones.items())
+    respuesta_07 = sorted(respuesta_07, key=lambda x: x[0])
+
+    return respuesta_07
 
 
 def pregunta_08():
@@ -174,7 +278,28 @@ def pregunta_08():
     ]
 
     """
-    return
+    asociaciones = {}
+    with open(r'data.csv', 'r') as file:
+        lines = file.readlines()
+
+    for line in lines:
+        parts = line.strip().split('\t')
+        if len(parts) > 2:
+            valor_columna_2 = int(parts[1])
+            letra_columna_1 = parts[0]
+            
+            if valor_columna_2 in asociaciones:
+                if letra_columna_1 not in asociaciones[valor_columna_2]:
+                    asociaciones[valor_columna_2].append(letra_columna_1)
+            else:
+                asociaciones[valor_columna_2] = [letra_columna_1]
+        for key in asociaciones:
+            asociaciones[key] = sorted(asociaciones[key])
+
+    respuesta_08 = list(asociaciones.items())
+    respuesta_08 = sorted(respuesta_08, key=lambda x: x[0])
+
+    return respuesta_08
 
 
 def pregunta_09():
@@ -197,7 +322,26 @@ def pregunta_09():
     }
 
     """
-    return
+    contar_clave = {}
+
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 5:
+                columna5 = parts[4]
+                elementos = columna5.split(',')
+                for elemento in elementos:
+                    if ':' in elemento:
+                        clave, _ = elemento.split(':')
+                        if clave in contar_clave:
+                            contar_clave[clave] += 1
+                        else:
+                            contar_clave[clave] = 1
+
+    resultado_09 = sorted(contar_clave.items(), key=lambda x: x[0])
+    resultado_09 = dict(sorted(contar_clave.items()))
+
+    return resultado_09
 
 
 def pregunta_10():
@@ -218,7 +362,21 @@ def pregunta_10():
 
 
     """
-    return
+    resultado_10 = []
+
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 5:
+                letra_columna_1 = parts[0]
+                elementos_columna_4 = parts[3].split(',')
+                elementos_columna_5 = parts[4].split(',')
+                cantidad_elementos = (len(elementos_columna_4), len(elementos_columna_5))
+
+                tupla = (letra_columna_1, *cantidad_elementos)
+                resultado_10.append(tupla)
+
+    return resultado_10
 
 
 def pregunta_11():
@@ -239,7 +397,23 @@ def pregunta_11():
 
 
     """
-    return
+    suma_por_letra = {}
+
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 5:
+                columna_2 = int(parts[1])
+                letras_columna_4 = parts[3].split(',')
+                for letra in letras_columna_4:
+                    if letra in suma_por_letra:
+                        suma_por_letra[letra] += columna_2
+                    else:
+                        suma_por_letra[letra] = columna_2
+
+    resultado_11 = dict(sorted(suma_por_letra.items()))
+
+    return resultado_11
 
 
 def pregunta_12():
@@ -257,4 +431,26 @@ def pregunta_12():
     }
 
     """
-    return
+    suma_por_letra = {}
+
+    with open(r'data.csv', 'r') as file:
+        for line in file:
+            parts = line.strip().split('\t')
+            if len(parts) >= 5:
+                letra_columna_1 = parts[0]
+                elementos_columna_5 = parts[4].split(',')
+                suma = 0
+
+                for elemento in elementos_columna_5:
+                    clave, valor_str = elemento.split(':')
+                    valor = int(valor_str)
+                    suma += valor
+
+                if letra_columna_1 in suma_por_letra:
+                    suma_por_letra[letra_columna_1] += suma
+                else:
+                    suma_por_letra[letra_columna_1] = suma
+
+    resultado_12 = dict(sorted(suma_por_letra.items()))
+
+    return resultado_12
